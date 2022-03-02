@@ -1,0 +1,74 @@
+////////////////Segundo Arduino (El que Recibe)://////////////////////////
+
+// C++ code
+//
+#include <SoftwareSerial.h>
+
+const int RX = 1;
+const int TX = 0;
+const int Pulsa = 5;  
+int estado = 0;
+
+SoftwareSerial mySerial(RX, TX);
+
+void setup()
+{
+mySerial.begin(4800);
+pinMode(Pulsa, INPUT);   
+//delay(500);
+}
+void loop()
+{
+  mySerial.listen();
+  estado = digitalRead(Pulsa);
+
+    if (estado == HIGH)mySerial.write('H');
+
+    else mySerial.write('L');
+  
+}
+
+
+
+
+////////////////Primer Arduino (El que envia)://////////////////////////
+
+// C++ code
+//
+
+#include <SoftwareSerial.h>
+int counter = 0;
+const int myserial_RX = 0;
+const int myserial_TX = 1;
+
+const int LED = 5;  
+  char estado;
+SoftwareSerial mySerial(myserial_RX, myserial_TX);
+
+
+void setup()
+{
+  pinMode(LED_BUILTIN, OUTPUT);
+    
+  Serial.begin(9600);
+  Serial.println("Start reading.");
+
+  mySerial.begin(4800);
+  //delay(500);
+  
+  pinMode(LED, OUTPUT);
+}
+void loop()
+{
+  if (mySerial.available())
+    {          
+      estado = mySerial.read();  
+     
+      if (estado == 'H') digitalWrite(LED, HIGH);         
+		else if (estado == 'L') digitalWrite(LED, LOW);       
+    }
+    
+}
+
+
+
