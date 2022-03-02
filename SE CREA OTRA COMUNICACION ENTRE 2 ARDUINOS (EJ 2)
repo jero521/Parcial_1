@@ -1,0 +1,67 @@
+////////////////Arduino que recibe///////////////
+//Arduino 2
+
+#include <SoftwareSerial.h>
+
+int cop[21];
+int counter = 0;
+const int myserial_RX = 3;
+const int myserial_TX = 2;
+
+SoftwareSerial mySerial(myserial_RX, myserial_TX);
+
+void setup()
+{
+  Serial.begin(9600);
+  Serial.println("Start reading.");
+  mySerial.begin(4800);
+  delay(500);
+}
+
+void loop()
+{
+  
+  while(mySerial.available()) {
+           
+   cop[counter] = mySerial.read();  
+   Serial.println(cop[counter]);       
+    counter++;
+                
+    delay(10);
+  }
+}
+
+
+////////////////Arduino que envia///////////////
+//Arduino 1 
+
+#include <SoftwareSerial.h>
+
+int cop2[21]={10,11,75,10,12,9,20,75,95,3,75,8,10,1,75,14,2,90,75,8,10};
+const int myserial_RX = 2;
+const int myserial_TX = 3;
+SoftwareSerial mySerial(myserial_RX, myserial_TX);
+ 
+void setup()
+{  
+  mySerial.begin(4800);
+  delay(500);
+}
+
+void loop()
+{
+  
+  mySerial.listen();
+  
+  for(int i = 0; i < 21; i++) {  
+    //Enviar Mensagem para Arduino_2
+    mySerial.write(cop2[i]); 
+      //Serial.print(message[i]); 
+
+  }
+ 
+  delay(2000);
+}
+
+
+
